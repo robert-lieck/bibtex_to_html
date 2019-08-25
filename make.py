@@ -32,6 +32,8 @@ def post_process_html(file_name_base, cwd):
     if os.path.isdir(abs_out_dir):
         shutil.rmtree(abs_out_dir)
     os.makedirs(abs_out_dir)
+    # copy css
+    shutil.copyfile(file_name_base + ".css", os.path.join(abs_out_dir, file_name_base + ".css"))
     # read file
     file_content = open(file_name_base + ".html", 'rb').read().decode(encoding=config['encoding'])
     # open output file (same name but in output directory
