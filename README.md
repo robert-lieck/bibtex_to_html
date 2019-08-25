@@ -47,7 +47,9 @@ This will automatically add links to your local PDF files to the `bibtex` entrie
 
 ### config.json
 
-If you do not want the full path (including you home directory etc.) to re-appear in the HTML you should adapting `file_prefix` by the real absolute path to your Zotero storage (or where ever your PDF files are stored). Also, on Windows the default value of `/` for the root directory will probably not work. The other values mean the following:
+If you do not want the full path (including you home directory etc; see [literature.html](literature/literature.html)) to re-appear in the HTML you should replace `file_prefix` by the real absolute path to your Zotero storage (or where ever your PDF files are stored). Also, on Windows the default value of `/` for the root directory will probably not work.
+
+The other values in `config.json` mean the following:
 
 ```"split_token": "#[PDF]#"```
 
@@ -86,4 +88,3 @@ If you do not want the full path (including you home directory etc.) to re-appea
    ```bibtex*{'author+an':'1=highlight'}```
 
    in the `Extra` field.
-
