@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+
+%% for customization see: https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
+\usepackage[style=authoryear-comp,
+    dashed=false,
+    natbib=true,
+    doi=false,
+    % url=false, % need url in reports etc
+    isbn=false,
+    maxbibnames=99, % will print complete name lists for multi-author/editor works in the bibliography while truncating those lists for in-text citations
+    % giveninits=true, % will render all first and middle names as initials
+    % dashed=false, % (available for the authoryear, authortitle, and verbose bibliography styles) will print recurring author/editor names instead of replacing them by a dash
+    sorting=ydnt,
+    backref=true,
+    backend=biber]{biblatex}
+
+%% clear some fields
+\newcommand*{\clearbibfields}{%
+  % \clearname{translator}%
+  % \clearlist{publisher}%
+  \clearfield{pagetotal}%
+  \clearlist{language}%
+  \clearlist{location}%
+  \clearfield{doi}%
+  \clearfield{url}%
+  \clearfield{eprint}%
+  \clearfield{eprinttype}%
+  \clearfield{note}%
+}
+\AtEveryBibitem{\clearbibfields}
+\AtEveryCitekey{\clearbibfields}
+%% don't print date for url
+\renewbibmacro*{url+urldate}{%
+  \usebibmacro{url}%
+}
+
+%% print pdf file path
+\renewbibmacro*{finentry}{%
+  \finentry%
+  \\\#[PDF]\#\printfield{file}\#[PDF]\#%
+}
+
+%% highlight entry type
+% \usepackage[usenames,dvipsnames,table]{xcolor}
+% \usepackage{pifont}
+% \renewbibmacro*{begentry}{%
+%   {%
+%     \ifentrytype{article}{%
+%       \color{BrickRed}%
+%       \ding{110}% square
+%     }{%
+%       \ifentrytype{inproceedings}{%
+%         \color{RoyalBlue}%
+%         \ding{115}% triangle up
+%       }{%
+%         \ifentrytype{incollection}{%
+%           \color{Emerald}%
+%           \ding{116}% triangle down
+%         }{%
+%           \ifentrytype{book}{%
+%             \color{OliveGreen}%
+%             \ding{108}% circle
+%           }{%
+%             \ifentrytype{report}{%
+%               \color{BurntOrange}%
+%               \ding{58}% circle
+%             }{%
+%               \ifentrytype{thesis}{%
+%                 \color{LimeGreen}%
+%                 \ding{117}% diamond
+%               }{%
+%                 \color{RedOrange}%
+%                 \ding{72}% star
+%               }%
+%             }%
+%           }%
+%         }%
+%       }%
+%     }%
+%     % \textbf{[\printfield{entrytype}]:}%
+%     ~%
+%   }%
+% }
+
+\bibliography{./literature.bib}
+\setlength{\bibitemsep}{0.5\baselineskip}
+
+\begin{document}
+
+\pagestyle{fancy}{
+  \fancyhead{}
+  \fancyfoot{}
+}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\nocite{*}
+
+% highlighting in references (add bibtex field "author+an = {1=highlight}" for
+% highlighting first author etc)
+\renewcommand*{\mkbibnamegiven}[1]{%
+  \ifitemannotation{highlight}
+  {\textbf{#1}}
+  {#1}}
+\renewcommand*{\mkbibnamefamily}[1]{%
+  \ifitemannotation{highlight}
+  {\textbf{#1}}
+  {#1}}
+
+\defbibfilter{Books}{
+  type=mvbook and not keyword=workshop and not keyword=submitted
+}
+\defbibfilter{JournalPapers}{
+  type=article and not keyword=workshop and not keyword=submitted
+}
+\defbibfilter{ConferencePapers}{
+  type=inproceedings and not keyword=workshop and not keyword=submitted
+}
+\defbibfilter{WorkshopTechReport}{
+  type=report or type=misc or keyword=workshop and not keyword=submitted
+}
+\defbibfilter{Thesis}{
+  type=thesis
+}
+\defbibfilter{Submitted}{
+  keyword=submitted
+}
+\defbibfilter{Other}{
+  not type=mvbook and
+  not type=article and
+  not type=inproceedings and
+  not type=report
+  not type=misc
+  not type=thesis
+  not keyword=workshop and
+  not keyword=submitted
+}
+
+\nocite{*}
+
+\printbibliography[title=Books,heading=subbibliography,filter=Books]
+\printbibliography[title=Journal Papers,heading=subbibliography,filter=JournalPapers]
+\printbibliography[title=Conference Papers,heading=subbibliography,filter=ConferencePapers]
+\printbibliography[title=Workshop Contributions \& Technical Reports,heading=subbibliography,filter=WorkshopTechReport]
+\printbibliography[title=PhD Thesis,heading=subbibliography,filter=Thesis]
+\printbibliography[title=Submitted,heading=subbibliography,filter=Submitted]
+\printbibliography[title=Other,heading=subbibliography,filter=Other]
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: t
+%%% End:

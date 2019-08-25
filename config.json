@@ -1,0 +1,9 @@
+{
+  "encoding": "iso-8859-1",
+  "file_link_start": "<a \nhref=\"",
+  "file_link_mid": "\" class=\"url\" ><span \nclass=\"cmtt-12\">",
+  "file_link_end": "</span></a>",
+  "split_token": "#[PDF]#",
+  "file_prefix": "/",
+  "pdf_dir": "pdfs"
+}
